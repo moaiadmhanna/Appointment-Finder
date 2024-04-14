@@ -1,17 +1,19 @@
 <?php
 include("./models/appointment.php");
+require_once ("db.php");
 class DataHandler
 {
     
 
-    public static function getDemoData()
+    public static function getAllApointments()
     {
-        $demodata = [
-            new Appoitment("Webscript", "Wien", "March 23 17:00", "March 23 17:15"),
-            new Appoitment("Mathe", "Wien", "March 23 17:15", "March 23 17:30"),
-            new Appoitment("Deutsch", "München", "March 23 17:30", "March 23 17:45"),
-            new Appoitment("English", "Düsseldorf", "March 23 17:45", "March 23 18:00"),
-        ];
-        return $demodata;
-    }
+        global $db;
+        $resultArray = array();
+        $sql = "SELECT * FROM Appointments";
+        $result=$db->query($sql);
+        while($row = $result->fetch_assoc()){
+            array_push($resultArray,$row);
+        }
+        return $resultArray;
+    }  
 }

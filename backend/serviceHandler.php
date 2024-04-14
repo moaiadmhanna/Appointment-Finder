@@ -1,21 +1,33 @@
 <?php
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
-    include ("db/dataHandler.php");
+    include ("businesslogic/simpleLogic.php");
+    $method = "";
+    $param = "";
 
-    function returnAllAppointments(){
-        $data = new DataHandler();
-        return $data->getDemoData();
+    isset($_GET["method"]) ? $method = $_GET["method"] : false;
+    isset($_GET["param"]) ? $param = $_GET["param"] : false;
+
+    $logic = new SimpleLogic();
+    $result = $logic->handleRequest($method, $param);
+    
+    if ($result == null) {
+        response("GET", 400, null);
+    } else {
+        response("GET", 200, $result);
     }
 
-    $result = returnAllAppointments();
-    
-    header('Content-Type: application/json');
-    if ($result == null) {
-        http_response_code(400);
-        echo json_encode(null);
-    } else {
-        http_response_code(200);
-        echo json_encode($result);
+    function response($method, $httpStatus, $data)
+    {
+        header('Content-Type: application/json');
+        switch ($method) {
+            case "GET":
+                http_response_code($httpStatus);
+                echo (json_encode($data));
+                break;
+            default:
+                http_response_code(405);
+                echo ("Method not supported yet!");
+        }
     }
 ?>
