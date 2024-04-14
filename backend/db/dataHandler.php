@@ -15,5 +15,5 @@ class DataHandler
             array_push($resultArray,$row);
         }
         return $resultArray;
-    }  
+    }
 }

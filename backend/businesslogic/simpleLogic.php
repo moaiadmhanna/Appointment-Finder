@@ -15,6 +15,9 @@ class SimpleLogic
             case "getAllApointments":
                 $res = $this->dh->getAllApointments();
                 break;
+            case "addAppointment":
+                $res = $this->dh->addAppointment($param);
+                break;
             default:
                 $res = null;
                 break;

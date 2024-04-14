@@ -9,9 +9,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/mystyle.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+          #appointment_list {
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping */
+            overflow-x: auto; /* Add a scrollbar if content exceeds container width */
+        }
+
+        .card {
+            flex: 0 0 auto; /* Prevent cards from growing */
+        }
+    </style>
 </head>
 <body>
-    <ul class="list-group list-group-horizontal justify-content-center" id="appointment_list">
-    </ul>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" class>Appointment Finder</a>
+        </div>
+    </nav>
+    <div class="m-5 d-flex flex-row flex-fill" id="appointment_list">
+    </div>
 </body>
 </html>

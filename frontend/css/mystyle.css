@@ -1,0 +1,12 @@
+#appointment_list {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll; /* Add a scrollbar if content exceeds container height */
+    height: 100vh; /* Set container height to fill the viewport */
+}
+
+.card {
+    flex: 1 1 auto; /* Each card grows to fill remaining space */
+    max-width: calc(25% - 20px); /* Adjusting for margins */
+    margin: 10px;
+}
