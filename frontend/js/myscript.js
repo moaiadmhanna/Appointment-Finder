@@ -5,6 +5,21 @@ $(document).ready(function () {
     event.preventDefault();
     submitForm();
   });
+  $('#new_appointment_form').on('submit', function (event) {
+    let title = $('#appointmentTitle').val();
+    let location = $('#appointmentLocation').val();
+    let date = $('#appointmentDate').val();
+    let expireDate = $('#appointmentExpireDate').val();
+    let Description = $('#appointmentDescription').val();
+    let startTime = $('#appointmentStartTime').val();
+    let endTime = $('#appointmentEndTime').val();
+  
+    let startDateTime = date + ' ' + startTime;
+    console.log(startDateTime);
+    let endDateTime = expireDate + ' ' + endTime;
+  
+    addAppointment(title, location, startDateTime, endDateTime, Description);
+  });
 });
 
 $("#search_btn").on("click", function () {
@@ -94,6 +109,7 @@ function createAppointment(response){
       </div>`);
       collapseDiv.append(collapseBody);
     }
+    let deleteBtn = $(`<button type="button" class="btn btn-outline-danger btn-lg m-2">Delete Appointment</button>`);
     appointmentDiv.append(title,location,date,expireDate,footerDiv,collapseDiv);
     appointmetli.append(appointmentDiv);
     let checkBox = $('<input class="form-check-input-dark" type="checkbox" value=""></input>');
@@ -159,19 +175,3 @@ function addAppointment(title, location, startDateTime, endDateTime, description
     },
   });
 }
-$('#new_appointment_form').on('submit', function (event) {
-  event.preventDefault();
-  let title = $('#appointmentTitle').val();
-  let location = $('#appointmentLocation').val();
-  let date = $('#appointmentDate').val();
-  let expireDate = $('#appointmentExpireDate').val();
-  let Description = $('#appointmentDescription').val();
-  let startTime = $('#appointmentStartTime').val();
-  let endTime = $('#appointmentEndTime').val();
-
-  let startDateTime = date + ' ' + startTime;
-  console.log(startDateTime);
-  let endDateTime = expireDate + ' ' + endTime;
-
-  addAppointment(title, location, startDateTime, endDateTime, Description);
-});
