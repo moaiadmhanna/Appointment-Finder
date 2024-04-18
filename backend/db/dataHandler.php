@@ -44,4 +44,15 @@ class DataHandler
     }
 
     
+
+    public function addAppointment($title, $location, $startDateTime, $endDateTime, $description)
+    {
+        global $db;
+        $sql = "INSERT INTO Appointments (Title, Location, Date, Expiry_Date, Voting, Description) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $db->prepare($sql);
+        $vote = 0;
+        $stmt->bind_param("ssssis", $title, $location, $startDateTime, $endDateTime, $vote, $description);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    }
 }
