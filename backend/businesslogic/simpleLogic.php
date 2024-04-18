@@ -22,6 +22,13 @@ class SimpleLogic
             case "getAppointmentInformation":
                 $res = $this->dh->getAppointmentInformation($param);
                 break;
+            case "saveAppointment":
+                $data = json_decode($param, true);
+                $res = $this->dh->saveAppointment($data['Name'],$data['Email'],$data['TimeStamp'],$data['Comment']);
+                break;
+            case "deleteAppointment":
+                $res = $this->dh->deleteAppointment($param);
+
             default:
                 $res = null;
                 break;

@@ -1,10 +1,10 @@
 $(document).ready(function () {
   getApointments();
-  
   $("#search_form").on("submit", function(event) {
     event.preventDefault();
     submitForm();
   });
+
   $('#new_appointment_form').on('submit', function (event) {
     let title = $('#appointmentTitle').val();
     let location = $('#appointmentLocation').val();
@@ -15,10 +15,20 @@ $(document).ready(function () {
     let endTime = $('#appointmentEndTime').val();
   
     let startDateTime = date + ' ' + startTime;
-    console.log(startDateTime);
     let endDateTime = expireDate + ' ' + endTime;
   
     addAppointment(title, location, startDateTime, endDateTime, Description);
+  })
+  $("#save_appointment_form").on('submit',function(event){
+    let name = $("#appointmentName").val();
+    let email = $("#appointmentEmail").val();
+    let comment = $("#appointmentComment").val();
+    let TimeStamp = getCheckedBoxValue();
+    saveAppointment(TimeStamp,name,email,comment);
+  });
+  $(document).on('submit', '.delete_appointment_form', function (event) {
+    let TimeStamp = $(this).find('input[name="delete_timeStamp"]').val();
+    deleteAppointment(TimeStamp);
   });
 });
 
@@ -82,6 +92,10 @@ function createAppointment(response){
     footerDiv.append(dateCreated,collapseBtn);
     let collapseDiv = $(`
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample${i}" aria-labelledby="offcanvasExample${i}">
+      <form class="delete_appointment_form" data-id="${response[i].Create_Date}" method='post'>
+        <input type="hidden" value="${response[i].Create_Date}" name="delete_timeStamp">
+        <button type="submit" class="btn btn-outline-danger btn-lg m-2">Delete Appointment</button>
+      </form>
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Description</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -109,10 +123,9 @@ function createAppointment(response){
       </div>`);
       collapseDiv.append(collapseBody);
     }
-    let deleteBtn = $(`<button type="button" class="btn btn-outline-danger btn-lg m-2">Delete Appointment</button>`);
     appointmentDiv.append(title,location,date,expireDate,footerDiv,collapseDiv);
     appointmetli.append(appointmentDiv);
-    let checkBox = $('<input class="form-check-input-dark" type="checkbox" value=""></input>');
+    let checkBox = $(`<input class="checkbox form-check-input-dark" name="checkbox" type="checkbox" value="${response[i].Create_Date}"></input>`);
     if(response[i].Voting == "1"){
       checkBox.attr("disabled",true);
       appointmetli.css({
@@ -168,10 +181,62 @@ function addAppointment(title, location, startDateTime, endDateTime, description
         endDateTime: endDateTime,
         description: description,
       }),
-    },
-    success: function (response) {
-      getApointments();
-      $('#newAppointmentModal').modal('hide');
-    },
+    }
   });
 }
+function areCheckboxesChecked() {
+  let checkboxes = $('.checkbox');
+  let cnt = 0;
+  for (let i = 0; i < checkboxes.length; i++) {
+    if(cnt > 1){
+      $('#save_appointment_Btn').attr("disabled",true);
+      $('.text_checkbox').text("You Should Choose just one Appointment");
+      return false
+    }
+    if (checkboxes[i].checked) {
+        cnt++;
+    }
+  }
+  if(cnt == 1){
+    $('.text_checkbox').text("");
+    $('#save_appointment_Btn').attr("disabled",false);
+    return true;
+  }
+  $('#save_appointment_Btn').attr("disabled",true);
+  $('.text_checkbox').text("You Should Choose an Appointment");
+  return false;
+}
+
+function saveAppointment(TimeStamp,Name,Email,Comment){
+  $.ajax({
+    type:'POST',
+    url: '../backend/serviceHandler.php',
+    data:{
+      method: 'saveAppointment',
+      param: JSON.stringify({
+        Email: Email,
+        Name: Name,
+        TimeStamp: TimeStamp,
+        Comment: Comment,
+      })
+    }
+  })
+}
+function getCheckedBoxValue(){
+  let checkboxes = $('.checkbox');
+  for (let i = 0; i < checkboxes.length; i++){
+    if (checkboxes[i].checked){
+      return checkboxes[i].value;
+    }
+  }
+}
+function deleteAppointment(TimeStamp) {
+  $.ajax({
+    type: 'POST',
+    url: '../backend/serviceHandler.php',
+    data: {
+      method: 'deleteAppointment',
+      param: TimeStamp,
+    },
+  });
+};
