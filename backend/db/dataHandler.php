@@ -29,6 +29,19 @@ class DataHandler
         }
         return $resultArray;
     }
-    
+    public static function getAppointmentInformation($param){
+        global $db;
+        $resultArray = array();
+        $sql = "SELECT comment,Name,Email FROM scheduled_appointments join users using(User_Id) WHERE Appointment_fk = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("s",$param);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while($row = $result->fetch_assoc()){
+            array_push($resultArray,$row);
+        }
+        return $resultArray;
+    }
+
     
 }
