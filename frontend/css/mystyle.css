@@ -1,12 +1,15 @@
 #appointment_list {
     display: flex;
-    flex-wrap: wrap;
-    overflow-y: scroll; /* Add a scrollbar if content exceeds container height */
-    height: 100vh; /* Set container height to fill the viewport */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    height: fit-content;
+    width: fit-content;
 }
-
 .card {
-    flex: 1 1 auto; /* Each card grows to fill remaining space */
-    max-width: calc(25% - 20px); /* Adjusting for margins */
-    margin: 10px;
+    flex: 0 0 auto;
+}
+.open{
+    width:20px;
+    height: 20px;
+    background-color: black;
 }
