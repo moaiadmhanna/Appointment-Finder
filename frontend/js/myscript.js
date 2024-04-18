@@ -46,7 +46,7 @@ function getAppointment(response){
     let date = $('<p class="card-text">Date:</p> <p class="card-text">' + response[i].Date + '</p>');
     let expireDate = $(
       '<p class="card-text">Expire Date:</p> <p class="card-text">' + response[i].Expiry_Date + '</p>',
-    );
+);
     let dateDiff = new Date().getDate() - new Date(response[i].Create_Date).getDate();
     if(dateDiff == 0){
       var dateCreated = $(`<div class="card-footer text-dark bg-light">Today</div>`)
@@ -100,3 +100,39 @@ function getApointments(param = null) {
     },
   });
 }
+function addAppointment(title, location, startDateTime, endDateTime, description) {
+  $.ajax({
+    type: 'POST',
+    url: '../backend/serviceHandler.php',
+    data: {
+      method: 'addAppointment',
+      param: JSON.stringify({
+        title: title,
+        location: location,
+        startDateTime: startDateTime,
+        endDateTime: endDateTime,
+        description: description,
+      }),
+    },
+    success: function (response) {
+      getApointments();
+      $('#newAppointmentModal').modal('hide');
+    },
+  });
+}
+$('#new_appointment_form').on('submit', function (event) {
+  event.preventDefault();
+  let title = $('#appointmentTitle').val();
+  let location = $('#appointmentLocation').val();
+  let date = $('#appointmentDate').val();
+  let expireDate = $('#appointmentExpireDate').val();
+  let Description = $('#appointmentDescription').val();
+  let startTime = $('#appointmentStartTime').val();
+  let endTime = $('#appointmentEndTime').val();
+
+  let startDateTime = date + ' ' + startTime;
+  console.log(startDateTime);
+  let endDateTime = expireDate + ' ' + endTime;
+
+  addAppointment(title, location, startDateTime, endDateTime, Description);
+});

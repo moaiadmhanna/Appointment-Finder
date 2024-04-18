@@ -46,7 +46,48 @@
         </div>
         <div class="d-flex justify-content-center mt-4"id="functionButtons">
             <div class="text-center">
-                <button type="button" class="btn btn-outline-info btn-lg m-2">New Appointment</button>
+                <button type="button" class="btn btn-outline-info btn-lg m-2" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">New Appointment</button>
+                <div class="modal fade" id="newAppointmentModal" tabindex="-1" aria-labelledby="newAppointmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="newAppointmentModalLabel">Create New Appointment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="new_appointment_form">
+                                    <div class="mb-3">
+                                        <label for="appointmentTitle" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="appointmentTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="appointmentLocation" class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="appointmentLocation" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="appointmentDate" class="form-label">Date</label>
+                                        <div class="d-flex">
+                                            <input type="date" class="form-control" id="appointmentDate" required>
+                                            <input type="time" class="form-control" id="appointmentStartTime" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="appointmentExpireDate" class="form-label">Expiry Date</label>
+                                        <div class="d-flex">
+                                            <input type="date" class="form-control" id="appointmentExpireDate" required>
+                                            <input type="time" class="form-control" id="appointmentEndTime" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="appointmentDescription" class="form-label">Description</label>
+                                        <textarea class="form-control" id="appointmentDescription" rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-outline-danger btn-lg m-2">Delete Appointment</button>
                 <button type="button" class="btn btn-outline-success btn-lg m-2">Save</button>
             </div>

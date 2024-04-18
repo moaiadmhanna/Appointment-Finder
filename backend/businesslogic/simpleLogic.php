@@ -16,7 +16,8 @@ class SimpleLogic
                 $res = $this->dh->getApointments($param);
                 break;
             case "addAppointment":
-                $res = $this->dh->addAppointment($param);
+                $data = json_decode($param, true);
+                $res = $this->dh->addAppointment($data['title'], $data['location'], $data['startDateTime'], $data['endDateTime'], $data['description'] ?? '');
                 break;
             default:
                 $res = null;
