@@ -1,5 +1,7 @@
+
 $(document).ready(function () {
   getApointments();
+  setMin();
   $("#search_form").on("submit", function(event) {
     event.preventDefault();
     submitForm();
@@ -35,6 +37,23 @@ $(document).ready(function () {
 $("#search_btn").on("click", function () {
   submitForm();
 });
+function setMin(){
+  document.getElementById("appointmentDate").setAttribute("min",`${dateInSQLFormat()}`);
+  let minDate = document.getElementById("appointmentDate").value;
+  document.getElementById("appointmentExpireDate").setAttribute("min",`${minDate}`);
+  if(minDate == dateInSQLFormat()){
+    let todaysDate = new Date();
+    let hour = todaysDate.getHours().toString().padStart(2, '0');
+    let minute = todaysDate.getMinutes().toString().padStart(2, '0');
+    let minTime = `${hour}:${minute}`;
+    document.getElementById("appointmentStartTime").setAttribute("min",minTime);
+  }
+  else {
+    document.getElementById("appointmentStartTime").removeAttribute("min");
+  }
+  let minTime = document.getElementById("appointmentStartTime").value;
+  document.getElementById("appointmentEndTime").setAttribute("min",`${minTime}`);
+}
 
 function submitForm() {
   let input = $("#search_input").val();
@@ -50,11 +69,12 @@ function dateInSQLFormat(type = "without"){
   if (day < 10) { day = '0' + day;}
   let hour = todaysDate.getHours();
   let minute = todaysDate.getMinutes();
+  let seconds = todaysDate.getSeconds();
   if(type == "without"){
     var result  = `${year}-${month}-${day}`;
   }
   else{
-    var result = `${year}-${month}-${day} ${hour}:${minute}`;
+    var result = `${year}-${month}-${day} ${hour}:${minute}:${seconds}`;
   }
   return result;
 }
@@ -68,6 +88,7 @@ function getAppointmentInformation(appID){
   })
 }
 function createAppointment(response){
+  console.log(response);
   let appointmentList = $('#appointment_list');
   appointmentList.empty();
   for (let i = 0; i < response.length; i++) {
