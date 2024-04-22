@@ -1,4 +1,5 @@
 <?php
+//Setzt Namen, Benutzernamen, Passwort und Hostnamen für die Datenbankverbindung 
 $_ENV['DB_NAME'] = 'Appointments_Finder';
 $_ENV['DB_USER'] = 'bif2webscriptinguser';
 $_ENV['DB_PASSWORD'] = 'bif2023';

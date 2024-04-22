@@ -1,13 +1,15 @@
 <?php
+// Bindet die Datenbankverbindungsdatei ein
 require_once ("db.php");
+// Definiert eine Klasse von Datenbankoperationen bezüglich Terminen
 class DataHandler
 {
     
-
+    // Methode, um Termine abzurufen; optional gefiltert durch einen Parameter
     public static function getApointments($param = null)
     {
-        global $db;
-        $resultArray = array();
+        global $db; // Verwendet die globale Datenbankverbindung
+        $resultArray = array(); // Initialisiert ein leeres Array für die Ergebnisse
         if($param == null)
         {
             $sql = "SELECT * FROM Appointments
@@ -18,6 +20,7 @@ class DataHandler
             }
             return $resultArray;
         }
+        // Wenn ein Parameter vorhanden ist, führe eine gefilterte Suche aus
         $sql = "SELECT * FROM Appointments WHERE Title LIKE CONCAT('%', ?, '%') ORDER BY Voting , Date desc";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("s",$param);
@@ -28,6 +31,7 @@ class DataHandler
         }
         return $resultArray;
     }
+    // Methode zur Abfrage von spezifischen Termininformationen
     public static function getAppointmentInformation($param){
         global $db;
         $resultArray = array();
@@ -41,6 +45,7 @@ class DataHandler
         }
         return $resultArray;
     }
+    // Methode zum Hinzufügen eines neuen Termins
     public function addAppointment($title, $location, $startDateTime, $endDateTime, $description)
     {
         global $db;
@@ -51,6 +56,7 @@ class DataHandler
         $stmt->execute();
         return $stmt->affected_rows;
     }
+    // Methode zum Speichern eines Termins mit Benutzerdaten
     public function saveAppointment($Name,$Email,$TimeStamp,$Comment){
         global $db;
         if(empty(searchUser($Email))){
@@ -65,6 +71,7 @@ class DataHandler
         $stmt->execute();
         return $stmt->affected_rows;
     }
+    // Methode zum Löschen eines Termins
     public static function deleteAppointment($TimeStamp)
     {
         global $db;
@@ -75,6 +82,7 @@ class DataHandler
         return $stmt->affected_rows;
     }
 }
+// Funktion zum Erstellen eines neuen Benutzers
 function createUser($Name,$Email){
     global $db;
     $sql = "INSERT INTO users(Name,Email) VALUES(?,?)";
@@ -83,6 +91,7 @@ function createUser($Name,$Email){
     $stmt->execute();
     return $stmt->affected_rows;
 }
+// Funktion zum Suchen eines Benutzers anhand der E-Mail
 function searchUser($Email){
     global $db;
     $sql = "SELECT User_Id FROM users WHERE EMAIL = ?";
@@ -93,6 +102,7 @@ function searchUser($Email){
     $row = $result->fetch_assoc();
     return $row;
 }
+// Funktion zum Abrufen der Termin-ID anhand des Erstellungsdatums
 function getAppointmentId($TimeStamp){
     global $db;
     $sql = "SELECT Appointment_id FROM Appointments WHERE Create_Date = ?";
@@ -106,6 +116,7 @@ function getAppointmentId($TimeStamp){
     }
     return $row["Appointment_id"];
 }
+// Funktion zum Aktualisieren des Abstimmungsstatus eines Termins
 function changeVoting($TimeStamp){
     global $db;
     $sql = "UPDATE Appointments SET Voting = '1' WHERE Create_date = ?";
