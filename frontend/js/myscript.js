@@ -1,6 +1,7 @@
 $(document).ready(function () {
   getApointments();
   
+  
   $("#search_form").on("submit", function(event) {
     event.preventDefault();
     submitForm();
@@ -87,7 +88,7 @@ function createAppointment(response){
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
     </div>`);
-    if(response[i].Voting == "1"){
+    if(response[i].Voting == "0" && response[i].Voting == "1"){
       getAppointmentInformation(response[i].Appointment_id).success(function(infoResponse){
         var collapseBody = $(`
       <div class="offcanvas-body">
@@ -109,7 +110,6 @@ function createAppointment(response){
       </div>`);
       collapseDiv.append(collapseBody);
     }
-    let deleteBtn = $(`<button type="button" class="btn btn-outline-danger btn-lg m-2">Delete Appointment</button>`);
     appointmentDiv.append(title,location,date,expireDate,footerDiv,collapseDiv);
     appointmetli.append(appointmentDiv);
     let checkBox = $('<input class="form-check-input-dark" type="checkbox" value=""></input>');
@@ -174,4 +174,23 @@ function addAppointment(title, location, startDateTime, endDateTime, description
       $('#newAppointmentModal').modal('hide');
     },
   });
+}
+
+function deleteAppointment(appointmentId) {
+  if (confirm("Are you sure you want to delete this appointment?")) {
+    $.ajax({
+      type: 'POST',
+      url: '../backend/serviceHandler.php',
+      data: {
+        method: 'deleteAppointment',
+        param: appointmentId,
+      },
+      success: function (response) {
+        if (response) {
+          getApointments();
+          alert('Appointment deleted successfully!');
+        }
+      },
+    });
+  }
 }

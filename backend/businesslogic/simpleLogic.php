@@ -22,6 +22,9 @@ class SimpleLogic
             case "getAppointmentInformation":
                 $res = $this->dh->getAppointmentInformation($param);
                 break;
+            case "deleteAppointment":
+                $res = $this->dh->deleteAppointment($param);
+                break;
             default:
                 $res = null;
                 break;

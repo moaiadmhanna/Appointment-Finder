@@ -55,4 +55,14 @@ class DataHandler
         $stmt->execute();
         return $stmt->affected_rows;
     }
+
+    public static function deleteAppointment($appointmentId)
+    {
+        global $db;
+        $sql = "DELETE FROM Appointments WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $appointmentId);
+        $stmt->execute();
+        return $stmt->affected_rows;
+    }
 }
